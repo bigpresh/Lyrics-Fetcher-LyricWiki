@@ -1,6 +1,9 @@
 Revision history for Perl extension Lyrics::Fetcher::LyricWiki
 
+0.02  29/05/2007
+    - documentation fixes - rushed first version out and left references to
+      Lyrics::Fetcher::AZLyrics in there!
       
-0.01  Sat Feb  3 15:14:27 2007
+0.01  13/05/2007
 	- original version
 

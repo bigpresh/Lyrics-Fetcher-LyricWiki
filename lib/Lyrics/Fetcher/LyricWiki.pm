@@ -13,7 +13,37 @@ our $VERSION = '0.04';
 # the HTTP User-Agent we'll send:
 our $AGENT = "Perl/Lyrics::Fetcher::LyricWiki $VERSION";
 
-    
+
+=head1 NAME
+
+Lyrics::Fetcher::LyricWiki - Get song lyrics from www.LyricWiki.org
+
+=head1 SYNOPSIS
+
+  use Lyrics::Fetcher;
+  print Lyrics::Fetcher->fetch("<artist>","<song>","LyricWiki");
+
+  # or, if you want to use this module directly without Lyrics::Fetcher's
+  # involvement:
+  use Lyrics::Fetcher::LyricWiki;
+  print Lyrics::Fetcher::LyricWiki->fetch('<artist>', '<song>');
+
+
+=head1 DESCRIPTION
+
+This module tries to get song lyrics from www.lyricwiki.org.  It's designed to
+be called by Lyrics::Fetcher, but can be used directly if you'd prefer.
+
+
+=head1 FUNCTIONS    
+
+=over 4
+
+=item I<fetch>($artist, $song)
+
+Fetch lyrics for the requested song.
+
+=cut
 
 sub fetch {
     
@@ -56,26 +86,7 @@ sub fetch {
 1;
 __END__
 
-=head1 NAME
-
-Lyrics::Fetcher::LyricWiki - Get song lyrics from www.LyricWiki.org
-
-=head1 SYNOPSIS
-
-  use Lyrics::Fetcher;
-  print Lyrics::Fetcher->fetch("<artist>","<song>","LyricWiki");
-
-  # or, if you want to use this module directly without Lyrics::Fetcher's
-  # involvement:
-  use Lyrics::Fetcher::LyricWiki;
-  print Lyrics::Fetcher::LyricWiki->fetch('<artist>', '<song>');
-
-
-=head1 DESCRIPTION
-
-This module tries to get song lyrics from www.lyricwiki.org.  It's designed to
-be called by Lyrics::Fetcher, but can be used directly if you'd prefer.
-
+=back
 
 =head1 BUGS
 

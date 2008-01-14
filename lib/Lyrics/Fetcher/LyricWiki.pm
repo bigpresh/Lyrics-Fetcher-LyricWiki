@@ -8,7 +8,7 @@ use warnings;
 use SOAP::Lite;
 use Carp;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 # the HTTP User-Agent we'll send:
 our $AGENT = "Perl/Lyrics::Fetcher::LyricWiki $VERSION";

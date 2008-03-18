@@ -1,14 +1,14 @@
  --- #YAML:1.0
  name: Lyrics-Fetcher-LyricWiki
  abstract: Get song lyrics from www.LyricWiki.org
- version: 0.04
+ version: 0.05
  author:
    - David Precious <davidp@preshweb.co.uk>
  license: perl
  distribution_type: module
  requires:
    SOAP::Lite: 0
-   perl: 5.008
+   perl: 5.005
  build_requires:
    Test: 0
  meta-spec:

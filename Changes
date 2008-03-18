@@ -1,5 +1,8 @@
 Revision history for Perl extension Lyrics::Fetcher::LyricWiki
 
+0.05  2008/03/18
+    - Run on prehistoric Perl 5.005, and some Kwalitee tweaks.
+    
 0.04  2008/01/14
     - Add META.yml, and POD tests
 

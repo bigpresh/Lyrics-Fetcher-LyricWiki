@@ -72,11 +72,15 @@ sub fetch {
     }
 
     # OK, parse the HTML:
-    my $parser = HTML::TagParser->new( $resp->content );
+    my $html = $resp->content;
+    $html =~ s{<br\s+/?>}{%newline%}gi;
+    my $parser = HTML::TagParser->new( $html );
 
     if (my $lyricsdiv = $parser->getElementsByClassName('lyricbox')) {
         $Lyrics::Fetcher::Error = 'OK';
-        return $lyricsdiv->innerText;
+        my $lyrics = $lyricsdiv->innerText;
+        $lyrics =~ s/%newline%/\n/g;
+        return $lyrics;
     } else {
         $Lyrics::Fetcher::Error = 'No lyrics parsed from page';
         return;

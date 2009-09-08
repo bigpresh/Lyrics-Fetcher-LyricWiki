@@ -63,7 +63,7 @@ sub fetch {
     my $ua = LWP::UserAgent->new();
     $ua->agent($AGENT);
 
-    my $url = join ':', map { s/\s+/_/ } ($artist, $song);
+    my $url = join ':', map { s/\s+/_/; $_ } ($artist, $song);
     my $resp = $ua->get("http://lyrics.wikia.com/lyrics/$url");
     
     if (!$resp->is_success) {

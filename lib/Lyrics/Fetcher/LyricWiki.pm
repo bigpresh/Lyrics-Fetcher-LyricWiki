@@ -67,8 +67,15 @@ sub fetch {
     my $resp = $ua->get("http://lyrics.wikia.com/lyrics/$url");
     
     if (!$resp->is_success) {
-        $Lyrics::Fetcher::Error = "Failed to fetch - " . $resp->status_line;
-        return;
+        if ($resp->status_line =~ /404/) {
+            # Lyrics for this song not found
+            $Lyrics::Fetcher::Error = 'Lyrics not found';
+            return;
+        } else {
+            # Something else wrong, so return HTTP error description
+            $Lyrics::Fetcher::Error = "Failed to fetch - " . $resp->status_line;
+            return;
+        }
     }
 
     # OK, parse the HTML:

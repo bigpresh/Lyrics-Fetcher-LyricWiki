@@ -8,7 +8,7 @@ use warnings;
 use SOAP::Lite;
 use Carp;
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 # the HTTP User-Agent we'll send:
 our $AGENT = "Perl/Lyrics::Fetcher::LyricWiki $VERSION";
@@ -72,6 +72,14 @@ sub fetch {
         $Lyrics::Fetcher::Error = 
                 'Lyrics not found';
             return;
+    }
+
+    # Check if we got told we couldn't have these lyrics due to licencing
+    # restrictions:
+    if ($result->{lyrics} =~ /Unfortunately, due to licensing restrictions/) {
+        $Lyrics::Fetcher::Error = 
+            'No lyrics via API due to Licensing restriction';
+        return;
     }
     
     # looks like it worked:

@@ -74,7 +74,7 @@ sub fetch {
     # OK, parse the HTML:
     my $parser = HTML::TagParser->new( $resp->content );
 
-    if (my $lyricsdiv = $parser->getElementsByClass('lyricbox')) {
+    if (my $lyricsdiv = $parser->getElementsByClassName('lyricbox')) {
         $Lyrics::Fetcher::Error = 'OK';
         return $lyricsdiv->innerText;
     } else {

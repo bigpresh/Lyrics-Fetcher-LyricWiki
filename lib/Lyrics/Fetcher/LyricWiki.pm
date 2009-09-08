@@ -5,7 +5,8 @@ package Lyrics::Fetcher::LyricWiki;
 use 5.005000;
 use strict;
 use warnings;
-use SOAP::Lite;
+use LWP::UserAgent;
+use HTML::TagParser;
 use Carp;
 
 our $VERSION = '0.06';
@@ -58,34 +59,28 @@ sub fetch {
             'fetch() called without artist and song');
         return;
     }
+
+    my $ua = LWP::UserAgent->new();
+    $ua->agent($AGENT);
+
+    my $url = join ':', map { s/\s+/_/ } ($artist, $song);
+    my $resp = $ua->get("http://lyrics.wikia.com/lyrics/$url");
     
-    my $soap = new SOAP::Lite->service('http://lyricwiki.org/server.php?wsdl');
-    my $result = $soap->getSong($artist, $song);
-        
-    
-    unless ($result->{lyrics}) {
-        $Lyrics::Fetcher::Error = 'SOAP request failed';
+    if (!$resp->is_success) {
+        $Lyrics::Fetcher::Error = "Failed to fetch - " . $resp->status_line;
         return;
     }
-    
-    if ($result->{lyrics} eq 'Not found') {
-        $Lyrics::Fetcher::Error = 
-                'Lyrics not found';
-            return;
-    }
 
-    # Check if we got told we couldn't have these lyrics due to licencing
-    # restrictions:
-    if ($result->{lyrics} =~ /Unfortunately, due to licensing restrictions/) {
-        $Lyrics::Fetcher::Error = 
-            'No lyrics via API due to Licensing restriction';
+    # OK, parse the HTML:
+    my $parser = HTML::TagParser->new( $resp->content );
+
+    if (my $lyricsdiv = $parser->getElementsByClass('lyricbox')) {
+        $Lyrics::Fetcher::Error = 'OK';
+        return $lyricsdiv->innerText;
+    } else {
+        $Lyrics::Fetcher::Error = 'No lyrics parsed from page';
         return;
     }
-    
-    # looks like it worked:
-    $Lyrics::Fetcher::Error = 'OK';
-    return $result->{lyrics};
-
 
 }
 
@@ -104,15 +99,22 @@ If you find any bugs, please let me know.
 
 =head1 THANKS
 
-Thanks to Sean Colombo for creating www.LyricWiki.org, and for creating
-SOAP-based web services to fetch lyrics (that's *so* much nicer than having
-to screen-scrape them!).
+Thanks to Sean Colombo for creating www.LyricWiki.org, and thanks to Wikia.com
+for taking on the project and keeping it alive.
 
 
 =head1 COPYRIGHT
 
 This program is free software; you can redistribute it and/or modify it under 
 the same terms as Perl itself.
+
+
+=head1 DISCLAIMER
+
+Lyrics are copyright their original owners and/or record companies who purchased
+the rights to them.  Lyrics accessed programmatically via this module should be
+used for educational purposes only, and should not be distributed/re-published
+without authorisation.  You are responsible for your usage of this module.
 
 
 =head1 AUTHOR
@@ -123,7 +125,7 @@ David Precious E<lt>davidp@preshweb.co.ukE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2007-2008 by David Precious
+Copyright (C) 2007-2009 by David Precious
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.8.7 or,

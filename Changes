@@ -1,9 +1,9 @@
 Revision history for Perl extension Lyrics::Fetcher::LyricWiki
 
 0.06  2009/09/08
-   - For some songs, LyricsWiki.org is no longer able to return lyrics via the
-     API due to licencing restrictions.  Detect this error message and return an
-     error, rather than it looking like we succeeded in getting lyrics.
+    - Stupid record companies forced LyricWiki (well, lyrics.wikia.com now) to
+      discontinue making lyrics available via the API.  Fine, I'll just parse
+      the lyrics from the HTML. 
 
 0.05  2008/03/18
     - Run on prehistoric Perl 5.005, and some Kwalitee tweaks.

@@ -63,12 +63,16 @@ sub fetch {
     my $ua = LWP::UserAgent->new();
     $ua->agent($AGENT);
 
+    # We'll fetch the edit page for the lyrics, as it provides nice clean text
+    # to parse out, without ringtone adverts etc which made the HTML
+    # unparseable.
     my $url = join ':', map { s/\s+/_/; $_ } ($artist, $song);
-    my $resp = $ua->get("http://lyrics.wikia.com/lyrics/$url");
+    my $resp = $ua->get("http://lyrics.wikia.com/lyrics/$url" . '&action=edit');
     
     if (!$resp->is_success) {
         if ($resp->status_line =~ /404/) {
-            # Lyrics for this song not found
+            # Lyrics for this song not found (this doesn't seem to happen, we
+            # get a 200 anyway, handled below...)
             $Lyrics::Fetcher::Error = 'Lyrics not found';
             return;
         } else {
@@ -78,26 +82,25 @@ sub fetch {
         }
     }
 
+    # Check it wasn't the "page doesn't exist yet" error page
+    if ($resp->content =~ /a link to a page that doesn't exist yet/) {
+        $Lyrics::Fetcher::Error = 'Lyrics not found';
+        return;
+    }
+    
+
     # OK, parse the HTML:
     my $html = $resp->content;
-    $html =~ s{<br\s+/?>}{%newline%}gi;
-    my $parser = HTML::TagParser->new( $html );
-
-    if (my $lyricsdiv = $parser->getElementsByClassName('lyricbox')) {
-        my $lyrics = $lyricsdiv->innerText;
-        $lyrics =~ s/%newline%/\n/g;
-        if ($lyrics) {
-            $Lyrics::Fetcher::Error = 'OK';
-            return $lyrics;
-        } else {
-            $Lyrics::Fetcher::Error = 'No lyrics parsed from page';
-            return;
-        }
+    my ($lyrics) = $html =~ m{ &lt;lyrics&gt; (.+?) &lt;/lyrics&gt;}xms;
+    
+    if ($lyrics) {
+        # Looks like we got something usable:
+        $Lyrics::Fetcher::Error = 'OK';
+        return $lyrics;
     } else {
         $Lyrics::Fetcher::Error = 'No lyrics parsed from page';
         return;
     }
-
 }
 
 

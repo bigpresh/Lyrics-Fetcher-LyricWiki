@@ -6,7 +6,6 @@ WriteMakefile(
     NAME              => 'Lyrics::Fetcher::LyricWiki',
     VERSION_FROM      => 'lib/Lyrics/Fetcher/LyricWiki.pm', # finds $VERSION
     PREREQ_PM         => { 
-        HTML::TagParser => 0,
         LWP::UserAgent  => 0,
     },
     NO_META           => 1,

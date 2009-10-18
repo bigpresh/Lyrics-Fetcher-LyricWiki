@@ -62,8 +62,6 @@ plan tests => scalar @tests * 4;
 
 
 TEST: for my $test (@tests) {
-    #printf "%s by %s\n", @$test{ qw(title artist) };
-    $testnum++;
     
     my $lyrics = Lyrics::Fetcher::LyricWiki->fetch(@$test{ qw(artist title) });
     my $title = $test->{title};

@@ -87,7 +87,15 @@ sub fetch {
         $Lyrics::Fetcher::Error = 'Lyrics not found';
         return;
     }
-    
+   
+    # If it was a redirect, we should follow it; just call ourselves again.
+    # TODO: make sure we don't end up with infinite recursion if there's a
+    # redirect loop.
+    if (my($newartist, $newtitle) = 
+        $resp->content =~ m{#REDIRECT \[\[ ([^:]+) : ([^:]+) \]\] })
+    {
+        return fetch($newartist, $newsong);
+    }
 
     # OK, parse the HTML:
     my $html = $resp->content;

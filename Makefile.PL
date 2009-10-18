@@ -5,7 +5,10 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
     NAME              => 'Lyrics::Fetcher::LyricWiki',
     VERSION_FROM      => 'lib/Lyrics/Fetcher/LyricWiki.pm', # finds $VERSION
-    PREREQ_PM         => { SOAP::Lite => 0 },
+    PREREQ_PM         => { 
+        HTML::TagParser => 0,
+        LWP::UserAgent  => 0,
+    },
     NO_META           => 1,
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM  => 'lib/Lyrics/Fetcher/LyricWiki.pm',

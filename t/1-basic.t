@@ -61,8 +61,6 @@ my @tests = (
 plan tests => scalar @tests * 4;
 
 
-my $testnum = 0;
-print "1.." . scalar @tests . "\n";
 TEST: for my $test (@tests) {
     #printf "%s by %s\n", @$test{ qw(title artist) };
     $testnum++;
@@ -80,7 +78,7 @@ TEST: for my $test (@tests) {
     }
 
     SKIP: {
-        skip "We expect this to fail, so skip success checks", 3
+        skip "We expect this to fail, so skip success checks", 2
             if $test->{fail};
         # This is a test that ought to succeed:
         like($lyrics, $test->{lookfor}, "Lyrics look acceptable");

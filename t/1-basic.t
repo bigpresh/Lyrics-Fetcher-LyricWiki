@@ -4,16 +4,18 @@
 
 # quick dirty testing for Lyrics::Fetcher::LyricWiki
 #
-# TODO: turn this into a proper test script with Test::Simple / Test::More.
-# Since some of the testing logic is reasonbly complex, it was easier to do
-# it manually rather than ending up with long-winded ok() and like() tests,
-# but that's not the Right Way to do it.
+
+# TODO: use Test::MockObject to replace the LWP object being used with one which
+# pretends to have fetched lyrics from lyricwiki, so we can test the behaviour
+# of this module given expected and unexpected input.  Currently, we're also
+# testing whether we can fetch lyrics, which could fail if a network link or the
+# LyricWiki site is unavailable, or, now that they've dropped their API, if
+# their site changes preventing this from working.
 
 use strict;
 use warnings;
-
-use lib '../lib/';
-require Lyrics::Fetcher::LyricWiki;
+use Test::More;
+use Lyrics::Fetcher::LyricWiki;
 
 
 # we have a set of tests, some of which should work, some of which should
@@ -47,22 +49,17 @@ my @tests = (
         lookfor => qr/jump on a high speed train/i,
     },
     {
-        title   => 'Bohemian Like You',
-        artist  => 'Dandy Warhols',
-        lookfor => qr/feeling so bohemian like you/i,
-    },
-    {
-        title   => 'Next Contestant',
-        artist  => 'Nickelback',
-        lookfor => qr/Is that your hand on my girlfriend/,
-    },
-    {
         title   => 'This Song Does Not Exist',
         artist  => 'Nobody In Particular',
         fail    => 1,
         error   => 'Lyrics not found',
     },
 );
+
+# For each test fetch, we perform two tests and skip two tests, depending upon
+# whether it's a test which should fail or not.
+plan tests => scalar @tests * 4;
+
 
 my $testnum = 0;
 print "1.." . scalar @tests . "\n";
@@ -71,42 +68,24 @@ TEST: for my $test (@tests) {
     $testnum++;
     
     my $lyrics = Lyrics::Fetcher::LyricWiki->fetch(@$test{ qw(artist title) });
-    if ($test->{fail} && ($lyrics || $Lyrics::Fetcher::Error eq 'OK')) {
-        print "not ok $testnum - test should fail, but didn't\n";
-        next TEST;
+    my $title = $test->{title};
+    SKIP: {
+        skip "We expect this to work, so skip the failure checks", 2
+            unless $test->{fail};
+        # We want to see a failure attempting to fetch lyrics for this one; if
+        # we get something, we're accidentally interpreting failure as success
+        ok(!$lyrics, "Got no lyrics for $title");
+        is($Lyrics::Fetcher::Error, $test->{error},
+            "Got expected error message");
     }
-    
-    
-    if (!$test->{fail} && (!$lyrics || $Lyrics::Fetcher::Error ne 'OK')) {
-        # it failed, when it's not supposed to
-        print "not ok $testnum - failed ($Lyrics::Fetcher::Error)\n";
-        next TEST;
-    }
-    
-    if ($test->{fail}) {
-        # this is a test which we expect to fail:
-        if ($lyrics || $Lyrics::Fetcher::Error eq 'OK') {
-            print "not ok $testnum - should have failed, but didn't\n";
-            next TEST;
-        }
-        
-        if ($test->{error} && $Lyrics::Fetcher::Error ne $test->{error}) {
-            print "not ok $testnum - should have failed with $test->{error} "
-                ."but it failed with $Lyrics::Fetcher::Error instead\n";
-            next TEST;
-        } else {
-            # it failed with the error we expected it to fail with:
-            print "ok $testnum\n";
-            next TEST;
-        }
-    }
-    
-   # finally, did we get back some lyrics that look like what we wanted to see?
-    if ($lyrics !~ $test->{lookfor}) {
-        print "not ok $testnum lyrics didn't match expected pattern\n";
-        next TEST;
-    }
-    
-    print "ok $testnum\n";
 
+    SKIP: {
+        skip "We expect this to fail, so skip success checks", 3
+            if $test->{fail};
+        # This is a test that ought to succeed:
+        like($lyrics, $test->{lookfor}, "Lyrics look acceptable");
+        is($Lyrics::Fetcher::Error, 'OK',
+            '$Lyrics::Fetcher::Error is \'OK\'');
+    }
+   
 }

@@ -63,7 +63,8 @@ plan tests => scalar @tests * 4;
 
 TEST: for my $test (@tests) {
     
-    my $lyrics = Lyrics::Fetcher::LyricWiki->fetch(@$test{ qw(artist title) });
+    my $lyrics = Lyrics::Fetcher::LyricWiki->fetch(@$test{ qw(artist title) })
+        || ''; # save errors trying to match regexes against uninitalised value
     my $title = $test->{title};
     SKIP: {
         skip "We expect this to work, so skip the failure checks", 2

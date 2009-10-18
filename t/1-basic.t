@@ -80,7 +80,8 @@ TEST: for my $test (@tests) {
         skip "We expect this to fail, so skip success checks", 2
             if $test->{fail};
         # This is a test that ought to succeed:
-        like($lyrics, $test->{lookfor}, "Lyrics look acceptable");
+        like($lyrics, $test->{lookfor}, 
+            "Lyrics look acceptable for $title by $artist");
         is($Lyrics::Fetcher::Error, 'OK',
             '$Lyrics::Fetcher::Error is \'OK\'');
     }

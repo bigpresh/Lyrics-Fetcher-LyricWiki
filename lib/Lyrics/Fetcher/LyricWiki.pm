@@ -94,7 +94,7 @@ sub fetch {
     if (my($newartist, $newtitle) = 
         $resp->content =~ m{#REDIRECT \[\[ ([^:]+) : ([^:]+) \]\] })
     {
-        return fetch($newartist, $newsong);
+        return fetch($newartist, $newtitle);
     }
 
     # OK, parse the HTML:

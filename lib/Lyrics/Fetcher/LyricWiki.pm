@@ -92,7 +92,7 @@ sub fetch {
     # TODO: make sure we don't end up with infinite recursion if there's a
     # redirect loop.
     if (my($newartist, $newtitle) = 
-        $resp->content =~ m{#REDIRECT \[\[ ([^:]+) : ([^:]+) \]\] })
+        $resp->content =~ m{#REDIRECT \s+ \[\[ ([^:]+) : ([^:]+) \]\] }xi)
     {
         return fetch($newartist, $newtitle);
     }

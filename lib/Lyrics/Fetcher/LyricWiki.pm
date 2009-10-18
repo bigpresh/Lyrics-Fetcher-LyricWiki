@@ -91,7 +91,7 @@ sub fetch {
 
     # OK, parse the HTML:
     my $html = $resp->content;
-    my ($lyrics) = $html =~ m{ &lt;lyrics&gt; (.+?) &lt;/lyrics&gt;}xms;
+    my ($lyrics) = $html =~ m{ &lt;lyrics?&gt; (.+?) &lt;/lyrics?&gt;}xms;
     
     if ($lyrics) {
         # Looks like we got something usable:

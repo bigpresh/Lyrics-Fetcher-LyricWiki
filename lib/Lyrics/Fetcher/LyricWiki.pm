@@ -8,7 +8,7 @@ use warnings;
 use LWP::UserAgent;
 use Carp;
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 # the HTTP User-Agent we'll send:
 our $AGENT = "Perl/Lyrics::Fetcher::LyricWiki $VERSION";

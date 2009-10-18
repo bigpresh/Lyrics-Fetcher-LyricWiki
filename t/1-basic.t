@@ -43,6 +43,7 @@ my @tests = (
         artist  => 'Oasis',
         lookfor => qr/Come on, Turn up the sun/i,
     },
+    # This one gets redirected (REM -> R.E.M.)
     {
         title   => 'High Speed Train',
         artist  => 'REM',

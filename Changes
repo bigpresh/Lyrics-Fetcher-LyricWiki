@@ -1,5 +1,14 @@
 Revision history for Perl extension Lyrics::Fetcher::LyricWiki
 
+0.07  2009/10/18
+    - Parsing of lyrics failed on pages where LyricWiki adds adverts for
+      ringtone downloads, as it seemed to break the HTML, choking
+      HTML::TagParser (and not validating against the w3c checker).
+      Replace previous parsing by fetching the edit page for the song, and
+      simply look for the lyrics which are presented nicely in the edit box,
+      between <lyrics?>...</lyrics?> tags.
+      Also, the test script was utter crap.  It's a little less crap now.
+
 0.06  2009/09/08
     - Stupid record companies forced LyricWiki (well, lyrics.wikia.com now) to
       discontinue making lyrics available via the API.  Fine, I'll just parse

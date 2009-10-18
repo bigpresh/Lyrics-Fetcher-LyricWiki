@@ -66,7 +66,8 @@ sub fetch {
     # to parse out, without ringtone adverts etc which made the HTML
     # unparseable.
     my $url = join ':', map { s/\s+/_/; $_ } ($artist, $song);
-    my $resp = $ua->get("http://lyrics.wikia.com/index.php?action=edit&'. $url);
+    my $resp = $ua->get("http://lyrics.wikia.com/index.php?action=edit"
+        . "&title=$url");
     
     if (!$resp->is_success) {
         if ($resp->status_line =~ /404/) {

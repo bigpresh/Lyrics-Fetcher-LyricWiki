@@ -6,7 +6,6 @@ use 5.005000;
 use strict;
 use warnings;
 use LWP::UserAgent;
-use HTML::TagParser;
 use Carp;
 
 our $VERSION = '0.06';
@@ -67,7 +66,7 @@ sub fetch {
     # to parse out, without ringtone adverts etc which made the HTML
     # unparseable.
     my $url = join ':', map { s/\s+/_/; $_ } ($artist, $song);
-    my $resp = $ua->get("http://lyrics.wikia.com/lyrics/$url" . '&action=edit');
+    my $resp = $ua->get("http://lyrics.wikia.com/index.php?action=edit&'. $url);
     
     if (!$resp->is_success) {
         if ($resp->status_line =~ /404/) {

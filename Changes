@@ -1,5 +1,10 @@
 Revision history for Perl extension Lyrics::Fetcher::LyricWiki
 
+0.08  2010/04/15
+    - One test was failing, as the wording of a song lyric had changed.
+      TODO: improve tests further, don't fail if we're not allowed to try
+      fetching lyrics etc.
+
 0.07  2009/10/18
     - Parsing of lyrics failed on pages where LyricWiki adds adverts for
       ringtone downloads, as it seemed to break the HTML, choking

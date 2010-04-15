@@ -47,7 +47,7 @@ my @tests = (
     {
         title   => 'High Speed Train',
         artist  => 'REM',
-        lookfor => qr/jump on a high speed train/i,
+        lookfor => qr/jump on a high(?:\s|-)speed train/i,
     },
     {
         title   => 'This Song Does Not Exist',

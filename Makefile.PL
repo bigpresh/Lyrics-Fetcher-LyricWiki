@@ -1,15 +1,20 @@
-use 5.005000;
+use strict;
+use warnings;
 use ExtUtils::MakeMaker;
-# See lib/ExtUtils/MakeMaker.pm for details of how to influence
-# the contents of the Makefile that is written.
+
 WriteMakefile(
-    NAME              => 'Lyrics::Fetcher::LyricWiki',
-    VERSION_FROM      => 'lib/Lyrics/Fetcher/LyricWiki.pm', # finds $VERSION
-    PREREQ_PM         => { 
-        LWP::UserAgent  => 0,
+    NAME                => 'Lyrics::Fetcher::LyricWiki',
+    AUTHOR              => q{David Precious <davidp@preshweb.co.uk>},
+    VERSION_FROM        => 'lib/Lyrics/Fetcher/LyricWiki.pm',
+    ABSTRACT_FROM       => 'lib/Lyrics/Fetcher/LyricWiki.pm',
+    ($ExtUtils::MakeMaker::VERSION >= 6.3002
+      ? ('LICENSE'=> 'perl')
+      : ()),
+    PL_FILES            => {},
+    PREREQ_PM => {
+        'Test::More' => 0,
+        'LWP::UserAgent' => 0,
     },
-    NO_META           => 1,
-    ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
-      (ABSTRACT_FROM  => 'lib/Lyrics/Fetcher/LyricWiki.pm',
-       AUTHOR         => 'David Precious <davidp@preshweb.co.uk>') : ()),
+    dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
+    clean               => { FILES => 'Lyrics-Fetcher-LyricWiki-*' },
 );

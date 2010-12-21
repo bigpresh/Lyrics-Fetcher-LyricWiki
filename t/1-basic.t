@@ -41,7 +41,7 @@ my @tests = (
     {
         title   => 'Turn Up The Sun',
         artist  => 'Oasis',
-        lookfor => qr/Come on, Turn up the sun/i,
+        lookfor => qr/Come on,? turn up the sun/i,
     },
     # This one gets redirected (REM -> R.E.M.)
     {

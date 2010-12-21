@@ -8,7 +8,7 @@ use warnings;
 use LWP::UserAgent;
 use Carp;
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 # the HTTP User-Agent we'll send:
 our $AGENT = "Perl/Lyrics::Fetcher::LyricWiki $VERSION";
@@ -152,7 +152,7 @@ David Precious E<lt>davidp@preshweb.co.ukE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2007-2009 by David Precious
+Copyright (C) 2007-2010 by David Precious
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.8.7 or,

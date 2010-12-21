@@ -1,5 +1,8 @@
 Revision history for Perl extension Lyrics::Fetcher::LyricWiki
 
+0.09  2010/12/21
+    - Another failing test due to song lyric wording change.
+
 0.08  2010/04/15
     - One test was failing, as the wording of a song lyric had changed.
       TODO: improve tests further, don't fail if we're not allowed to try

@@ -8,7 +8,7 @@ use warnings;
 use LWP::UserAgent;
 use Carp;
 
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 
 # the HTTP User-Agent we'll send:
 our $AGENT = "Perl/Lyrics::Fetcher::LyricWiki $VERSION";
@@ -99,7 +99,11 @@ sub fetch {
 
     # OK, parse the HTML:
     my $html = $resp->content;
-    my ($lyrics) = $html =~ m{ &lt;lyrics?&gt; (.+?) &lt;/lyrics?&gt;}xms;
+    my ($lyrics) = $html =~ m{ 
+        &lt;lyrics?(?:&gt;|>) 
+        (.+?)
+        &lt;/lyrics?(?:&gt;|>)
+        }xms;
     
     if ($lyrics) {
         # Looks like we got something usable:
